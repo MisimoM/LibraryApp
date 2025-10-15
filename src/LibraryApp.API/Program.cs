@@ -1,6 +1,9 @@
+using LibraryApp.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddInfrastructure();
 
 builder.Services.AddOpenApi();
 

@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\aspire\LibraryApp.ServiceDefaults\LibraryApp.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\LibraryApp.Application\LibraryApp.Application.csproj" />
+    <ProjectReference Include="..\LibraryApp.Infrastructure\LibraryApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
