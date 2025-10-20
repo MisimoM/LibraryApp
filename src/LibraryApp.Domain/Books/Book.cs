@@ -65,8 +65,8 @@ public class Book
         DateOnly publicationDate,
         BookCategory category,
         BookLanguage language,
-        string description,
-        string coverImageUrl)
+        string? description,
+        string? coverImageUrl)
     {
         return new Book(title, author, isbn, publisher, publicationDate, category, language, description, coverImageUrl);
     }
