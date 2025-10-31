@@ -1,6 +1,6 @@
 ﻿using LibraryApp.Application.Common.Interfaces;
 using LibraryApp.Domain.Books;
-using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Infrastructure.Persistence.Repositories;
 
@@ -16,5 +16,10 @@ public class BookRepository : IBookRepository
     {
         await _dbContext.Books.AddAsync(book, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<bool> Exists(string title, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Books.AnyAsync(b  => b.Title == title, cancellationToken);
     }
 }
