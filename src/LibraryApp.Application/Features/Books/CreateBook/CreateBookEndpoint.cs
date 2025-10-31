@@ -1,4 +1,6 @@
 ﻿using LibraryApp.Application.Common.Interfaces;
+using LibraryApp.Application.Common.ResultPattern;
+using LibraryApp.Domain.Books;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -11,10 +13,16 @@ public class CreateBookEndpoint : IEndpoint
     {
         builder.MapPost("/books", async (CreateBookRequest request, CreateBookHandler handler, CancellationToken cancellationToken) =>
         {
-            var response = await handler.Handle(request, cancellationToken);
+            var result = await handler.Handle(request, cancellationToken);
 
-            return Results.Created($"/books/{response.Id}", response);
+            return result.IsSuccess
+               ? Results.Created($"/books/{result.Value.Id}", result.Value)
+               : result.Error.ToHttpResult();
         })
-        .Produces<CreateBookResponse>(StatusCodes.Status201Created);
+        .Produces<Book>(StatusCodes.Status201Created)
+        .Produces(StatusCodes.Status409Conflict)
+        .Produces(StatusCodes.Status400BadRequest)
+        .WithName("CreateBook")
+        .WithTags("Books");
     }
 }
