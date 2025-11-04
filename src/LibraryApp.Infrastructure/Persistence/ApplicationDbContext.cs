@@ -1,4 +1,5 @@
 ﻿using LibraryApp.Domain.Books;
+using LibraryApp.Domain.Users;
 using LibraryApp.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Book> Books { get; set; }
     public DbSet<BookCopy> BookCopies { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
