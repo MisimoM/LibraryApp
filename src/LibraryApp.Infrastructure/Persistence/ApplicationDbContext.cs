@@ -19,5 +19,6 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new BookConfiguration());
         modelBuilder.ApplyConfiguration(new BookCopyConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
     }
 }

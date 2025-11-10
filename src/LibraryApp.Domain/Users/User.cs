@@ -24,7 +24,7 @@ public class User
         Email = email;
         Password = password;
         Role = role;
-        CreatedAt = DateTime.Now;
+        CreatedAt = DateTime.UtcNow;
         IsActive = true;
     }
 
