@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryApp.Application", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryApp.Infrastructure", "src\LibraryApp.Infrastructure\LibraryApp.Infrastructure.csproj", "{114433B5-2DF1-4550-8A95-DE96B6BCBECF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryApp.AppHost", "aspire\LibraryApp.AppHost\LibraryApp.AppHost.csproj", "{8608D2C3-FD5D-455D-A160-BEF3CB70AA93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryApp.AppHost", "aspire\LibraryApp.AppHost\LibraryApp.AppHost.csproj", "{1CA1C80E-09C4-4C5E-B673-1AFA12EB30A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryApp.ServiceDefaults", "aspire\LibraryApp.ServiceDefaults\LibraryApp.ServiceDefaults.csproj", "{26C9BC7B-3CF5-AC25-0781-6A8B030D729C}"
 EndProject
@@ -43,10 +43,10 @@ Global
 		{114433B5-2DF1-4550-8A95-DE96B6BCBECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114433B5-2DF1-4550-8A95-DE96B6BCBECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{114433B5-2DF1-4550-8A95-DE96B6BCBECF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8608D2C3-FD5D-455D-A160-BEF3CB70AA93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8608D2C3-FD5D-455D-A160-BEF3CB70AA93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8608D2C3-FD5D-455D-A160-BEF3CB70AA93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8608D2C3-FD5D-455D-A160-BEF3CB70AA93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CA1C80E-09C4-4C5E-B673-1AFA12EB30A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CA1C80E-09C4-4C5E-B673-1AFA12EB30A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CA1C80E-09C4-4C5E-B673-1AFA12EB30A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CA1C80E-09C4-4C5E-B673-1AFA12EB30A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{26C9BC7B-3CF5-AC25-0781-6A8B030D729C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{26C9BC7B-3CF5-AC25-0781-6A8B030D729C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26C9BC7B-3CF5-AC25-0781-6A8B030D729C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,7 +60,7 @@ Global
 		{308BB197-87B5-4AD2-A08B-1A7606CDCA88} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{71732591-CBC7-4844-A53C-14D482CC8C91} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{114433B5-2DF1-4550-8A95-DE96B6BCBECF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{8608D2C3-FD5D-455D-A160-BEF3CB70AA93} = {A1FC9E00-93DC-4E81-A6EE-6574E04AA6CF}
+		{1CA1C80E-09C4-4C5E-B673-1AFA12EB30A6} = {A1FC9E00-93DC-4E81-A6EE-6574E04AA6CF}
 		{26C9BC7B-3CF5-AC25-0781-6A8B030D729C} = {A1FC9E00-93DC-4E81-A6EE-6574E04AA6CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -1,12 +1,14 @@
-IDistributedApplicationBuilder builder = DistributedApplication.CreateBuilder(args);
+var builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<PostgresDatabaseResource> database = builder.AddPostgres("database")
-    .WithPgAdmin()
+var postgres = builder.AddPostgres("postgres")
+    .WithHostPort(5432)
     .WithDataVolume()
-    .AddDatabase("library-db");
+    .WithLifetime(ContainerLifetime.Persistent);
+
+var libraryDatabase = postgres.AddDatabase("library-db");
 
 builder.AddProject<Projects.LibraryApp_API>("libraryapp-api")
-    .WithReference(database)
-    .WaitFor(database);
+    .WithReference(libraryDatabase)
+    .WaitFor(libraryDatabase);
 
 builder.Build().Run();
