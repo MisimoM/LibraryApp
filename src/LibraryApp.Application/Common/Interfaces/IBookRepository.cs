@@ -6,5 +6,7 @@ namespace LibraryApp.Application.Common.Interfaces
     {
         Task Add(Book book, CancellationToken cancellationToken);
         Task<bool> Exists(string title, CancellationToken cancellationToken);
+        Task<Book?> GetById(Guid id, CancellationToken cancellationToken);
+        Task Update(Book book, CancellationToken cancellationToken);
     }
 }

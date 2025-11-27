@@ -1,5 +1,6 @@
 ﻿using LibraryApp.Application.Common.Interfaces;
 using LibraryApp.Application.Features.Books.CreateBook;
+using LibraryApp.Application.Features.Books.CreateBookCopy;
 using LibraryApp.Application.Features.Users.CreateUser;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<CreateBookHandler>();
+        services.AddScoped<CreateBookCopyHandler>();
         services.AddScoped<CreateUserHandler>();
 
         return services;

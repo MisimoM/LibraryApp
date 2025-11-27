@@ -2,6 +2,8 @@
 
 public class Book
 {
+    private const int MaxCopies = 20;
+
     public Guid Id { get; private set; }
     public string Title { get; private set; }
     public string Author { get; private set; }
@@ -108,12 +110,25 @@ public class Book
         CoverImageUrl = coverImageUrl;
     }
 
-    public BookCopy AddCopy()
+    public IReadOnlyCollection<BookCopy> AddCopies(int count = 1)
     {
-        int bookCopyId = _copies.Count + 1;
-        var copy = new BookCopy(Id, bookCopyId);
-        _copies.Add(copy);
-        return copy;
+        if (count <= 0)
+            throw new ArgumentException("Number of copies must be greater than zero.", nameof(count));
+
+        if (_copies.Count + count > MaxCopies)
+            throw new InvalidOperationException($"Cannot have more than {MaxCopies} copies for a single book.");
+
+        var createdCopies = new List<BookCopy>(count);
+        int nextCopyId = _copies.Count + 1;
+
+        for (int i = 0; i < count; i++)
+        {
+            var copy = new BookCopy(Id, nextCopyId++);
+            _copies.Add(copy);
+            createdCopies.Add(copy);
+        }
+
+        return createdCopies.AsReadOnly();
     }
 
     internal void IncrementBorrowCount() => BorrowCount++;
