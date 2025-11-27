@@ -22,4 +22,17 @@ public class BookRepository : IBookRepository
     {
         return await _dbContext.Books.AnyAsync(b  => b.Title == title, cancellationToken);
     }
+
+    public async Task<Book?> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Books
+            .Include(b => b.Copies)
+            .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
+    }
+
+    public async Task Update(Book book, CancellationToken cancellationToken)
+    {
+        _dbContext.Update(book);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
 }
