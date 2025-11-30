@@ -131,5 +131,10 @@ public class Book
         return createdCopies.AsReadOnly();
     }
 
+    public BookCopy? GetCopy(int copyId)
+    {
+        return Copies.FirstOrDefault(c => c.BookCopyId == copyId);
+    }
+
     internal void IncrementBorrowCount() => BorrowCount++;
 }
