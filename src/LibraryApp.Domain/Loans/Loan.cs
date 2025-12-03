@@ -6,9 +6,9 @@ public class Loan
     public Guid UserId { get; private set; }
     public Guid BookId { get; private set; }
     public int BookCopyId { get; private set; }
-    public DateOnly LoanDate { get; private set; }
-    public DateOnly DueDate { get; private set; }
-    public DateOnly? ReturnedDate { get; private set; }
+    public DateTime LoanDate { get; private set; }
+    public DateTime DueDate { get; private set; }
+    public DateTime? ReturnedDate { get; private set; }
     public bool IsActive { get; private set; }
 
     private Loan(Guid userId, Guid bookId, int bookCopyId)
@@ -21,7 +21,7 @@ public class Loan
         UserId = userId;
         BookId = bookId;
         BookCopyId = bookCopyId;
-        LoanDate = DateOnly.FromDateTime(DateTime.Now);
+        LoanDate = DateTime.UtcNow;
         DueDate = LoanDate.AddDays(7);
         ReturnedDate = null;
         IsActive = true;
@@ -37,7 +37,7 @@ public class Loan
         if (!IsActive)
             throw new InvalidOperationException("Loan is already returned.");
 
-        ReturnedDate = DateOnly.FromDateTime(DateTime.Now);
+        ReturnedDate = DateTime.UtcNow;
         IsActive = false;
     }
 }

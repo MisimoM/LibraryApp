@@ -136,5 +136,5 @@ public class Book
         return Copies.FirstOrDefault(c => c.BookCopyId == copyId);
     }
 
-    internal void IncrementBorrowCount() => BorrowCount++;
+    public void IncrementBorrowCount() => BorrowCount++;
 }

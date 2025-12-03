@@ -20,22 +20,12 @@ public class LoanConfiguration : IEntityTypeConfiguration<Loan>
                .IsRequired();
 
         builder.Property(l => l.LoanDate)
-               .IsRequired()
-               .HasConversion(
-                   d => d.ToDateTime(TimeOnly.MinValue),
-                   d => DateOnly.FromDateTime(d));
+               .IsRequired();
 
         builder.Property(l => l.DueDate)
-               .IsRequired()
-               .HasConversion(
-                   d => d.ToDateTime(TimeOnly.MinValue),
-                   d => DateOnly.FromDateTime(d));
+               .IsRequired();
 
-        builder.Property(l => l.ReturnedDate)
-               .HasConversion(
-                   d => d.HasValue ? d.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
-                   d => d.HasValue ? DateOnly.FromDateTime(d.Value) : (DateOnly?)null
-               );
+        builder.Property(l => l.ReturnedDate);
 
         builder.Property(l => l.IsActive)
                .IsRequired();
