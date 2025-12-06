@@ -18,7 +18,7 @@ public class ReturnLoanEndpoint : IEndpoint
                 ? Results.Ok(result.Value)
                 : result.Error.ToHttpResult();
         })
-        .Produces(StatusCodes.Status200OK)
+        .Produces<ReturnLoanResponse>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound)
         .WithName("ReturnLoan")
         .WithTags("Loans");

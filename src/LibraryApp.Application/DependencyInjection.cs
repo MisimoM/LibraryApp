@@ -1,6 +1,7 @@
 ﻿using LibraryApp.Application.Common.Interfaces;
 using LibraryApp.Application.Features.Books.CreateBook;
 using LibraryApp.Application.Features.Books.CreateBookCopy;
+using LibraryApp.Application.Features.Books.GetBooks;
 using LibraryApp.Application.Features.Loans.CreateLoan;
 using LibraryApp.Application.Features.Loans.ReturnLoan;
 using LibraryApp.Application.Features.Users.CreateUser;
@@ -14,6 +15,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<CreateBookHandler>();
+        services.AddScoped<GetBooksHandler>();
         services.AddScoped<CreateBookCopyHandler>();
         
         services.AddScoped<CreateUserHandler>();
