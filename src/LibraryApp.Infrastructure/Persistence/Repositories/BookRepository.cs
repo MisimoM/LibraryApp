@@ -23,6 +23,14 @@ public class BookRepository : IBookRepository
         return await _dbContext.Books.AnyAsync(b  => b.Title == title, cancellationToken);
     }
 
+    public async Task<List<Book>> GetAll(CancellationToken cancellationToken)
+    {
+        return await _dbContext.Books
+            .Include(b => b.Copies)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Book?> GetById(Guid id, CancellationToken cancellationToken)
     {
         return await _dbContext.Books
