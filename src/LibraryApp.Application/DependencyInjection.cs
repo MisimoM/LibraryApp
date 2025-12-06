@@ -2,6 +2,7 @@
 using LibraryApp.Application.Features.Books.CreateBook;
 using LibraryApp.Application.Features.Books.CreateBookCopy;
 using LibraryApp.Application.Features.Loans.CreateLoan;
+using LibraryApp.Application.Features.Loans.ReturnLoan;
 using LibraryApp.Application.Features.Users.CreateUser;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +15,11 @@ public static class DependencyInjection
     {
         services.AddScoped<CreateBookHandler>();
         services.AddScoped<CreateBookCopyHandler>();
+        
         services.AddScoped<CreateUserHandler>();
+        
         services.AddScoped<CreateLoanHandler>();
+        services.AddScoped<ReturnLoanHandler>();
 
         return services;
     }
