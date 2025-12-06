@@ -9,4 +9,7 @@ public sealed record NotFoundError(string Code, string? Description = null)
 public sealed record ConflictError(string Code, string? Description = null)
     : Error(Code, Description, ErrorType.Conflict);
 
+public sealed record UnexpectedError(string Code, string? Description = null)
+    : Error(Code, Description, ErrorType.ServerError);
+
 
