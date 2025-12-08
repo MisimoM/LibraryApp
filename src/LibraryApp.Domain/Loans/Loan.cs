@@ -1,21 +1,27 @@
-﻿namespace LibraryApp.Domain.Loans;
+﻿using LibraryApp.Domain.Books;
+using LibraryApp.Domain.Users;
+
+namespace LibraryApp.Domain.Loans;
 
 public class Loan
 {
     public Guid Id { get; private set; }
     public Guid UserId { get; private set; }
     public Guid BookId { get; private set; }
-    public int BookCopyId { get; private set; }
+    public Guid BookCopyId { get; private set; }
     public DateTime LoanDate { get; private set; }
     public DateTime DueDate { get; private set; }
     public DateTime? ReturnedDate { get; private set; }
-    public bool IsActive { get; private set; }
+    public LoanStatus Status { get; private set; }
 
-    private Loan(Guid userId, Guid bookId, int bookCopyId)
+    public Book Book { get; private set; } = null!;
+    public User User { get; private set; } = null!;
+
+    private Loan(Guid userId, Guid bookId, Guid bookCopyId)
     {
         if (userId == Guid.Empty) throw new ArgumentException("UserId cannot be empty.", nameof(userId));
         if (bookId == Guid.Empty) throw new ArgumentException("BookId cannot be empty.", nameof(bookId));
-        if (bookCopyId <= 0) throw new ArgumentException("BookCopyId must be a positive integer.", nameof(bookCopyId));
+        if (bookCopyId == Guid.Empty) throw new ArgumentException("BookCopyId cannot be empty.", nameof(bookCopyId));
 
         Id = Guid.NewGuid();
         UserId = userId;
@@ -24,20 +30,20 @@ public class Loan
         LoanDate = DateTime.UtcNow;
         DueDate = LoanDate.AddDays(7);
         ReturnedDate = null;
-        IsActive = true;
+        Status = LoanStatus.Loaned;
     }
 
-    public static Loan Create(Guid userId, Guid bookId, int bookCopyId)
+    public static Loan Create(Guid userId, Guid bookId, Guid bookCopyId)
     {
         return new Loan (userId, bookId, bookCopyId);
     }
 
     public void Return()
     {
-        if (!IsActive)
-            throw new InvalidOperationException("Loan is already returned.");
+        if (Status != LoanStatus.Loaned)
+            throw new InvalidOperationException("Loan is already returned or cannot be returned.");
 
         ReturnedDate = DateTime.UtcNow;
-        IsActive = false;
+        Status = LoanStatus.Returned;
     }
 }

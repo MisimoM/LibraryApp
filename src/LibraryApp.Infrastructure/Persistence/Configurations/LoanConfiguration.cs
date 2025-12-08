@@ -27,9 +27,18 @@ public class LoanConfiguration : IEntityTypeConfiguration<Loan>
 
         builder.Property(l => l.ReturnedDate);
 
-        builder.Property(l => l.IsActive)
+        builder.Property(l => l.Status)
+               .HasConversion<string>()
                .IsRequired();
 
         builder.HasIndex(l => new { l.UserId, l.BookId, l.BookCopyId });
+
+        builder.HasOne(l => l.Book)
+               .WithMany()
+               .HasForeignKey(l => l.BookId);
+
+        builder.HasOne(l => l.User)
+               .WithMany()
+               .HasForeignKey(l => l.UserId);
     }
 }

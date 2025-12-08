@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LibraryApp.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251129202938_InitialLoanSchema")]
-    partial class InitialLoanSchema
+    [Migration("20251208194844_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,8 +110,8 @@ namespace LibraryApp.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("BookCopyId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("BookCopyId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("BookId")
                         .HasColumnType("uuid");
@@ -119,19 +119,22 @@ namespace LibraryApp.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("LoanDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("ReturnedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId", "BookId", "BookCopyId");
 
@@ -184,6 +187,25 @@ namespace LibraryApp.Infrastructure.Persistence.Migrations
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LibraryApp.Domain.Loans.Loan", b =>
+                {
+                    b.HasOne("LibraryApp.Domain.Books.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryApp.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LibraryApp.Domain.Books.Book", b =>

@@ -2,4 +2,4 @@
 
 namespace LibraryApp.Application.Features.Books.GetBooks;
 
-public record GetBookCopyResponse(int BookCopyId, string Status);
+public record GetBookCopyResponse(Guid Id, int BookCopyId, string Status);

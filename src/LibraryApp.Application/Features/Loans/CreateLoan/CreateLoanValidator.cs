@@ -12,8 +12,8 @@ public class CreateLoanValidator
         if (request.BookId == Guid.Empty)
             return new ValidationError("InvalidBookId", "BookId cannot be empty");
 
-        if (request.BookCopyId <= 0)
-            return new ValidationError("InvalidBookCopyId", "BookCopyId must be greater than zero");
+        if (request.BookCopyId == Guid.Empty)
+            return new ValidationError("InvalidBookCopyId", "BookCopyId cannot be empty");
 
         return Result.Success();
     }
