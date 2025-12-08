@@ -1,5 +1,6 @@
 ﻿using LibraryApp.Application.Common.Interfaces;
 using LibraryApp.Application.Common.ResultPattern;
+using LibraryApp.Domain.Loans;
 
 namespace LibraryApp.Application.Features.Loans.ReturnLoan;
 
@@ -20,7 +21,7 @@ public class ReturnLoanHandler
         if (loan is null)
             return new NotFoundError("LoanNotFound", $"Loan with id '{loanId}' was not found");
 
-        if (!loan.IsActive)
+        if (loan.Status == LoanStatus.Returned)
             return new ConflictError("AlreadyReturned", "This loan has already been returned");
 
         var book = await _bookRepository.GetById(loan.BookId, cancellationToken);
