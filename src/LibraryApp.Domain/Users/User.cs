@@ -1,6 +1,8 @@
-﻿namespace LibraryApp.Domain.Users;
+﻿using LibraryApp.Domain.Common;
 
-public class User
+namespace LibraryApp.Domain.Users;
+
+public class User : Entity
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
