@@ -1,4 +1,5 @@
-﻿using LibraryApp.Application.Common.Interfaces;
+﻿using LibraryApp.Application.Common.Events;
+using LibraryApp.Application.Common.Interfaces;
 using LibraryApp.Application.Common.ResultPattern;
 using LibraryApp.Domain.Loans;
 
@@ -8,11 +9,13 @@ public class ReturnLoanHandler
 {
     private readonly ILoanRepository _loanRepository;
     private readonly IBookRepository _bookRepository;
+    private readonly IDomainEventDispatcher _domainEventDispatcher;
 
-    public ReturnLoanHandler(ILoanRepository loanRepository, IBookRepository bookRepository)
+    public ReturnLoanHandler(ILoanRepository loanRepository, IBookRepository bookRepository, IDomainEventDispatcher domainEventDispatcher)
     {
         _loanRepository = loanRepository;
         _bookRepository = bookRepository;
+        _domainEventDispatcher = domainEventDispatcher;
     }
 
     public async Task<Result<ReturnLoanResponse>> Handle(Guid loanId, CancellationToken cancellationToken)
@@ -37,6 +40,9 @@ public class ReturnLoanHandler
 
         await _loanRepository.Update(loan, cancellationToken);
         await _bookRepository.Update(book, cancellationToken);
+
+        await _domainEventDispatcher.Dispatch(loan.DomainEvents, cancellationToken);
+        loan.ClearDomainEvents();
 
         return new ReturnLoanResponse(loan.Id, book.Title, loan.ReturnedDate.GetValueOrDefault(DateTime.UtcNow));
     }

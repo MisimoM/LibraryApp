@@ -1,9 +1,11 @@
 ﻿using LibraryApp.Domain.Books;
+using LibraryApp.Domain.Common;
+using LibraryApp.Domain.Loans.Events;
 using LibraryApp.Domain.Users;
 
 namespace LibraryApp.Domain.Loans;
 
-public class Loan
+public class Loan : Entity
 {
     public Guid Id { get; private set; }
     public Guid UserId { get; private set; }
@@ -45,5 +47,7 @@ public class Loan
 
         ReturnedDate = DateTime.UtcNow;
         Status = LoanStatus.Returned;
+
+        AddDomainEvent(new LoanReturnedEvent(Id, UserId, BookId, BookCopyId));
     }
 }

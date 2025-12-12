@@ -1,6 +1,8 @@
-﻿namespace LibraryApp.Domain.Books;
+﻿using LibraryApp.Domain.Common;
 
-public class Book
+namespace LibraryApp.Domain.Books;
+
+public class Book : Entity
 {
     private const int MaxCopies = 20;
 

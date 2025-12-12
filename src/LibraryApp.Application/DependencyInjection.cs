@@ -1,4 +1,6 @@
-﻿using LibraryApp.Application.Common.Interfaces;
+﻿using LibraryApp.Application.Common.EventHandlers;
+using LibraryApp.Application.Common.Events;
+using LibraryApp.Application.Common.Interfaces;
 using LibraryApp.Application.Features.Books.CreateBook;
 using LibraryApp.Application.Features.Books.CreateBookCopy;
 using LibraryApp.Application.Features.Books.GetBooks;
@@ -6,6 +8,7 @@ using LibraryApp.Application.Features.Loans.CreateLoan;
 using LibraryApp.Application.Features.Loans.GetLoans;
 using LibraryApp.Application.Features.Loans.ReturnLoan;
 using LibraryApp.Application.Features.Users.CreateUser;
+using LibraryApp.Domain.Loans.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +27,10 @@ public static class DependencyInjection
         services.AddScoped<CreateLoanHandler>();
         services.AddScoped<ReturnLoanHandler>();
         services.AddScoped<GetLoansHandler>();
+
+        services.AddScoped<IDomainEventHandler<LoanReturnedEvent>, LoanReturnedEventHandler>();
+
+        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>(); 
 
         return services;
     }
