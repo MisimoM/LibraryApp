@@ -1,4 +1,5 @@
-﻿using LibraryApp.Domain.Books;
+﻿using LibraryApp.Application.Common.Interfaces;
+using LibraryApp.Domain.Books;
 using LibraryApp.Domain.Loans;
 using LibraryApp.Domain.Users;
 using LibraryApp.Infrastructure.Persistence.Configurations;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
@@ -22,6 +23,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new BookConfiguration());
         modelBuilder.ApplyConfiguration(new BookCopyConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new  LoanConfiguration());
+        modelBuilder.ApplyConfiguration(new LoanConfiguration());
     }
 }

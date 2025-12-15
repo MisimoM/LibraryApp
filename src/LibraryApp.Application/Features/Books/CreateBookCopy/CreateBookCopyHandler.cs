@@ -1,15 +1,16 @@
-﻿using LibraryApp.Application.Common.ResultPattern;
-using LibraryApp.Application.Common.Interfaces;
+﻿using LibraryApp.Application.Common.Interfaces;
+using LibraryApp.Application.Common.ResultPattern;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Application.Features.Books.CreateBookCopy;
 
 public class CreateBookCopyHandler
 {
-    private readonly IBookRepository _bookRepository;
+    private readonly IApplicationDbContext _dbContext;
 
-    public CreateBookCopyHandler(IBookRepository bookRepository)
+    public CreateBookCopyHandler(IApplicationDbContext dbContext)
     {
-        _bookRepository = bookRepository;
+        _dbContext = dbContext;
     }
 
     public async Task<Result<CreateBookCopyResponse>> Handle(Guid bookId, CreateBookCopyRequest request, CancellationToken cancellationToken)
@@ -18,7 +19,9 @@ public class CreateBookCopyHandler
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        var book = await _bookRepository.GetById(bookId, cancellationToken);
+        var book = await _dbContext.Books
+            .Include(b => b.Copies)
+            .FirstOrDefaultAsync(b => b.Id == bookId, cancellationToken);
 
         if (book == null)
             return new NotFoundError("BookNotFound", $"A book with id '{bookId}' was not found");
@@ -31,7 +34,7 @@ public class CreateBookCopyHandler
 
         book.AddCopies(request.Count);
 
-        await _bookRepository.Update(book, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new CreateBookCopyResponse(book.Id, book.Title, request.Count);
     }
