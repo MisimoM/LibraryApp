@@ -1,36 +1,38 @@
 ﻿using LibraryApp.Application.Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Application.Features.Books.GetBooks;
 
 public class GetBooksHandler
 {
-    private readonly IBookRepository _bookRepository;
+    private readonly IApplicationDbContext _dbContext;
 
-    public GetBooksHandler(IBookRepository bookRepository)
+    public GetBooksHandler(IApplicationDbContext dbContext)
     {  
-        _bookRepository = bookRepository; 
+        _dbContext = dbContext;
     }
 
     public async Task<IEnumerable<GetBooksResponse>> Handle(CancellationToken cancellationToken)
     {
-        var books = await _bookRepository.GetAll(cancellationToken);
 
-        return books.Select(b => new GetBooksResponse(
-            b.Id,
-            b.Title,
-            b.Author,
-            b.Isbn,
-            b.Publisher,
-            b.PublicationDate,
-            b.Category,
-            b.Language,
-            b.Description,
-            b.CoverImageUrl,
-            b.Copies.Select(c => new GetBookCopyResponse(
-                c.Id,
-                c.BookCopyId,
-                c.Status.ToString()
-            ))
-        ));
+        return await _dbContext.Books
+            .AsNoTracking()
+            .Select(b => new GetBooksResponse(
+                b.Id,
+                b.Title,
+                b.Author,
+                b.Isbn,
+                b.Publisher,
+                b.PublicationDate,
+                b.Category,
+                b.Language,
+                b.Description,
+                b.CoverImageUrl,
+                b.Copies.Select(c => new GetBookCopyResponse(
+                    c.Id,
+                    c.BookCopyId,
+                    c.Status.ToString()
+                ))
+            )).ToListAsync(cancellationToken);
     }
 }

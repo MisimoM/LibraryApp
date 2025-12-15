@@ -1,16 +1,17 @@
 ﻿using LibraryApp.Application.Common.Interfaces;
 using LibraryApp.Application.Common.ResultPattern;
 using LibraryApp.Domain.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Application.Features.Users.CreateUser;
 
 public class CreateUserHandler
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IApplicationDbContext _dbContext;
 
-    public CreateUserHandler(IUserRepository userRepository)
+    public CreateUserHandler(IApplicationDbContext dbContext)
     {
-        _userRepository = userRepository;
+        _dbContext = dbContext;
     }
 
     public async Task<Result<CreateUserResponse>> Handle(CreateUserRequest request, CancellationToken cancellationToken)
@@ -19,7 +20,7 @@ public class CreateUserHandler
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        if (await _userRepository.Exists(request.Email, cancellationToken))
+        if (await _dbContext.Users.AnyAsync(u => u.Email == request.Email, cancellationToken))
             return new ConflictError("UserConflict", $"A user with email '{request.Email}' already exists");
 
         var user = User.Create(
@@ -28,7 +29,8 @@ public class CreateUserHandler
             request.Password
         );
 
-        await _userRepository.Add(user, cancellationToken);
+        _dbContext.Users.Add(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new CreateUserResponse(user.Id);
     }

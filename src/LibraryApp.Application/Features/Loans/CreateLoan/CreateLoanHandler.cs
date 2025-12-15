@@ -2,23 +2,17 @@
 using LibraryApp.Application.Common.ResultPattern;
 using LibraryApp.Domain.Books;
 using LibraryApp.Domain.Loans;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApp.Application.Features.Loans.CreateLoan;
 
 public class CreateLoanHandler
 {
-    private readonly IBookRepository _bookRepository;
-    private readonly ILoanRepository _loanRepository;
-    private readonly IUserRepository _userRepository;
+    private readonly IApplicationDbContext _dbContext;
 
-    public CreateLoanHandler(
-        IBookRepository bookRepository,
-        ILoanRepository loanRepository,
-        IUserRepository userRepository)
+    public CreateLoanHandler(IApplicationDbContext dbContext)
     {
-        _bookRepository = bookRepository;
-        _loanRepository = loanRepository;
-        _userRepository = userRepository;
+        _dbContext = dbContext;
     }
 
     public async Task<Result<CreateLoanResponse>> Handle(CreateLoanRequest request, CancellationToken cancellationToken)
@@ -27,11 +21,14 @@ public class CreateLoanHandler
         if (validationResult.IsFailure)
             return validationResult.Error;
 
-        var user = await _userRepository.GetById(request.UserId, cancellationToken);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(l => l.Id == request.UserId, cancellationToken);
         if (user is null)
             return new NotFoundError("UserNotFound", $"User with id '{request.UserId}' was not found");
 
-        var book = await _bookRepository.GetById(request.BookId, cancellationToken);
+        var book = await _dbContext.Books
+            .Include(b => b.Copies)
+            .FirstOrDefaultAsync(b => b.Id == request.BookId, cancellationToken);
+
         if (book is null)
             return new NotFoundError("BookNotFound", $"Book with id '{request.BookId}' was not found");
 
@@ -50,8 +47,8 @@ public class CreateLoanHandler
         bookCopy.MarkAsBorrowed();
         book.IncrementBorrowCount();
 
-        await _loanRepository.Add(loan, cancellationToken);
-        await _bookRepository.Update(book, cancellationToken);
+        _dbContext.Loans.Add(loan);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new CreateLoanResponse(loan.Id, user.Id, book.Id, bookCopy.Id, book.Title, loan.DueDate);
     }
